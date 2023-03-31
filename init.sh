@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Upgrade the system
 sudo apt upgrade
 
