@@ -28,5 +28,8 @@ plugins=(
   zsh-syntax-highlighting
 )
 
+# Update path variable to add local binaries in the environment
+export PATH=$PATH:$HOME/.local/bin
+
 source $ZSH/oh-my-zsh.sh
 
