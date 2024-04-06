@@ -32,3 +32,12 @@ After generating copy the public key and set it up under GitHub settings
 4. Node: `node-setup.sh`
 5. React: `react-setup.sh` 
 
+### Setting up Neovim
+
+To setup the neovim in your machine, run the following command `./nvim.sh`. 
+
+I use [vim-plug](https://github.com/junegunn/vim-plug) to manage my extensions.
+
+Please note that we use [AppImage](https://appimage.org/) to run neovim, and it required to setup [FUSE](https://github.com/libfuse/libfuse) to run.
+You can install fuse using the following command `sudo apt-get install fuse`
+
