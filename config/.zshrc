@@ -8,28 +8,17 @@ ZSH_THEME="agnoster"
 plugins=(
   docker
   docker-compose
-  emoji
   git
-  golang
-  jira
-  minikube
   node
-  npm
-  poetry
-  pylint
   python
-  terraform
-  tmux
-  rust
-  vscode
-  yarn
   z
   zsh-autosuggestions
   zsh-syntax-highlighting
 )
 
 # Update path variable to add local binaries in the environment
-export PATH=$PATH:$HOME/.local/bin
+export PATH=$HOME/.local/bin:$PATH
+# Prioritize yarn global binaries and make them available globally
+export PATH=$HOME/.yarn/bin:$PATH
 
 source $ZSH/oh-my-zsh.sh
-
