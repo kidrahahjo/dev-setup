@@ -216,7 +216,7 @@ cmp.setup({
     { name = 'buffer' },
   })
 })
-require("cmp_git").setup() ]]-- 
+require("cmp_git").setup() ]]--
 
 -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline({ '/', '?' }, {
@@ -245,13 +245,17 @@ local lspconfig = require('lspconfig')
 lspconfig.pyright.setup{
   on_attach = on_attach,
   capabilities = capabilities,
+  root_dir = function(fname)
+    return require('lspconfig.util').find_git_ancestor(fname) or
+           require('lspconfig.util').path.dirname(fname)
+  end,
 }
 -- TS Server
 lspconfig.tsserver.setup{
   on_attach = on_attach,
   capabilities = capabilities,
 }
--- Bash Server 
+-- Bash Server
 lspconfig.bashls.setup{
   on_attach = on_attach,
   capabilities = capabilities,
