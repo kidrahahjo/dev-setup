@@ -26,11 +26,7 @@ After generating copy the public key and set it up under GitHub settings
 
 ### Development Setup
 
-1. To initialize your local development setup, run the `init.sh` script.
-2. Python: `python-setup.sh` 
-3. Rust: `rust-setup.sh`
-4. Node: `node-setup.sh`
-5. React: `react-setup.sh` 
+To initialize your local development setup, run the `init.sh` script.
 
 ### Setting up Neovim
 
