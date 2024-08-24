@@ -23,15 +23,13 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-~/.
 # Install poweline fonts to be able to set them from preferences
 sudo apt-get install fonts-powerline
 
-# Make directories for local binaries and repositories
-mkdir $HOME/tmp
-LOCAL_PACKAGES=$HOME/.local
-mkdir $LOCAL_PACKAGES
-mkdir $LOCAL_PACKAGES/bin
+CONFIG_DIR=$HOME/.config/zsh
+mkdir $CONFIG_DIR
+BACKUP_DIR=$HOME/devsetupbackup/init
+rm -rf $BACKUP_DIR && mkdir -p $BACKUP_DIR
+[-f $CONFIG_DIR] && mv $CONFIG_DIR $BACKUP_DIR
+cp ./config/.zshrc $CONFIG_DIR/.zshrc
+cp ./config/.zshenv $HOME/.zshenv
 
-# TODO: Add code to clone and replace .zshrc and .bashrc
-
-
-source ~/.bashrc
-source ~/.zshrc
+source $CONFIG_DIR/.zshrc
 
