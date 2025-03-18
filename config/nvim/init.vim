@@ -11,17 +11,6 @@ Plug 'sainnhe/sonokai'
 
 " }}}
 
-" Search & Browse --- {{{
-
-" Browse through directories: https://github.com/junegunn/fzf.vim
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-
-" Power Search: https://github.com/mileszs/ack.vim
-Plug 'mileszs/ack.vim'
-
-" }}}
-
 " Git --- {{{
 
 " Call any git command with this plugin: https://github.com/tpope/vim-fugitive
@@ -67,8 +56,23 @@ Plug 'rust-lang/rust.vim'
 " TODO: Plugin for Q sytax highlight
 " Plug 'katusk/vim-qkdb-syntax'
 
-call plug#end()
+" File System Interaction --- {{{
+" File explorer
+Plug 'nvim-tree/nvim-web-devicons'
+Plug 'nvim-tree/nvim-tree.lua'
 
+" To be able to create files and directories
+Plug 'Mohammed-Taher/AdvancedNewFile.nvim'
+
+" Browse through directories: https://github.com/junegunn/fzf.vim
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+" Power Search: https://github.com/mileszs/ack.vim
+Plug 'mileszs/ack.vim'
+" }}}
+
+call plug#end()
 
 " Indentation Rules
 set tabstop=4
@@ -88,29 +92,18 @@ colorscheme sonokai
 set number
 set relativenumber
 
-" Open FZF GFiles with Ctrl+p
-nnoremap <C-p> :<C-u>:GFiles<CR>
-" Open FZF Files with Ctrl+f
-nnoremap <C-f> :<C-u>:Files<CR>
+" FS Interaction
+nnoremap <C-q> :<C-u>:NvimTreeToggle<CR>
+nnoremap <Leader>q :<C-u>:GFiles<CR>
+nnoremap <Leader>Q :<C-u>:Files<CR>
+nnoremap <C-n> :<C-u>:AdvancedNewFile<CR>
 
-let $FZF_DEFAULT_COMMAND = 'rg --files'
+" let $FZF_DEFAULT_COMMAND = 'rg --files'
 " Do not sort the search results
-let $FZF_DEFAULT_OPTS = "--no-sort --tac"
-
-" TODO CoC: TextEdit might fail if hiddent is not set
-" set hidden
-
-" TODO CoC: Some servers have issues with backup files, see #649
-" set nobackup
-" set nowritebackup
-
-" TODO CoC: Having longer updatetime (default is 4000 ms = 4s) leads to noticeable
-" delays and poor user experience
-" set updatetime=300
+let $FZF_DEFAULT_OPTS = "--no-sort --tac --exact -i"
 
 " TODO nvim-lsp: Don't pass messages to |ins-completion-menu|
 " set shortmess+=c
-"
 
 " Configurations for ack.vim --- {{{
 " https://www.freecodecamp.org/news/how-to-search-project-wide-vim-ripgrep-ack/
@@ -120,7 +113,7 @@ let $FZF_DEFAULT_OPTS = "--no-sort --tac"
 " --vimgrep -> Needed to parse the rg response properly for ack.vim
 " --type-not sql -> Avoid huge sql file dumps as it slows down the search
 " --smart-case -> Search case insensitive if all lowercase pattern, Search case sensitively otherwise
-let g:ackprg = 'rg --vimgrep --type-not sql --smart-case'
+let g:ackprg = 'rg --pcre2 --vimgrep --type-not sql --smart-case'
 
 " Auto close the Quickfix list after pressing '<enter>' on a list item
 let g:ack_autoclose = 1
@@ -133,10 +126,6 @@ cnoreabbrev Ack Ack!
 
 " Maps <leader>/ so we're ready to type the search keyword
 nnoremap <Leader>/ :Ack!<Space>
-
-" Navigate quickfix list with ease
-nnoremap <silent> [q :cprevious<CR>
-nnoremap <silent> ]q :cnext<CR>
 
 " }}}
 
@@ -240,11 +229,11 @@ cmp.setup.cmdline(':', {
 -- Set up lspconfig.
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 local lspconfig = require('lspconfig')
-
 -- Pyright setup
 lspconfig.pyright.setup{
   on_attach = on_attach,
   capabilities = capabilities,
+  lsp_flags = lsp_flags,
   root_dir = function(fname)
     return require('lspconfig.util').find_git_ancestor(fname) or
            require('lspconfig.util').path.dirname(fname)
@@ -271,7 +260,11 @@ lspconfig.rust_analyzer.setup{
   on_attach = on_attach,
   capabilities = capabilities,
 }
-
+-- Clangd
+lspconfig.clangd.setup{
+  on_attach = on_attach,
+  capabilities = capabilities,
+}
 -- Trouble Setup
 -- 
 -- settings without a patched font or icons
@@ -288,6 +281,31 @@ require("trouble").setup{
         information = "info"
     },
     use_diagnostic_signs = false -- enabling this will use the signs defined in your lsp client
+}
+
+-- nvim-tree setup
+require("nvim-web-devicons").setup()
+require("nvim-tree").setup{
+  hijack_cursor = true,
+  disable_netrw = true,
+  hijack_unnamed_buffer_when_opening = true,
+  renderer = {
+    icons = {
+      web_devicons = {
+        file = {
+          enable = true,
+          color = true,
+        },
+        folder = {
+          enable = true,
+          color = false,
+        },
+      },
+    },
+  },
+  filters = {
+    enable = false,
+  }
 }
 EOF
 
