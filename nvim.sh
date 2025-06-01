@@ -1,7 +1,7 @@
 # Setup Backup Directories
 echo "Backing up existing files"
 BACKUP_DIR=$HOME/vim-install-backup
-rm -rf $BACKUP_DIR && mkdir $BACKUP_DIR
+rm -rf $BACKUP_DIR && mkdir -p $BACKUP_DIR
 NVIM_DIR=$HOME/.local/bin/nvim
 [ -f $NVIM_DIR ] && mv $NVIM_DIR $BACKUP_DIR
 RG_DIR=$HOME/.local/bin/rg
@@ -10,8 +10,8 @@ CONFIG_DIR=$HOME/.config/nvim
 [ -f $CONFIG_DIR ] && mv $CONFIG_DIR $BACKUP_DIR
 
 echo "Installing nvim..."
-curl --silent -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
-mv nvim.appimage $NVIM_DIR
+curl --silent -LO https://github.com/neovim/neovim/releases/download/v0.11.2/nvim-linux-x86_64.appimage
+mv nvim-linux-x86_64.appimage $NVIM_DIR
 chmod u+x $NVIM_DIR
 
 echo "Installing ripgrep for search...."
